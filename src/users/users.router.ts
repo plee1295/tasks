@@ -6,6 +6,8 @@ import express, { Request, Response } from 'express'
 import * as UserService from './users.service'
 import { BaseItem, User } from './user.interface'
 
+import { checkJwt } from "../middleware/authz.middleware";
+
 /**
  * Router Definition
  */
@@ -43,6 +45,9 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
     res.status(500).send(e.message)
   }
 })
+
+// Mount authorization middleware
+usersRouter.use(checkJwt);
 
 // POST users
 usersRouter.post('/', async (req: Request, res: Response) => {
